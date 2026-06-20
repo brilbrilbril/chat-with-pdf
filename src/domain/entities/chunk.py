@@ -1,11 +1,20 @@
 from dataclasses import dataclass, field
-from chunk_source import ChunkSource
+from src.domain.entities.chunk_source import ChunkSource
 from typing import Optional
 from uuid import UUID, uuid4
 
 @dataclass
+class RawChunk:
+    text: str
+    page_number: int | None = None
+    slide_number: int | None = None
+    sheet_name: str | None = None
+    row_start: int | None = None
+    row_end: int | None = None
+    chunk_index: int = 0
+
+@dataclass
 class Chunk:
-    """A text chunk ready for embedding and storage."""
     document_id: UUID
     text: str
     source: ChunkSource

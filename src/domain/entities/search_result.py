@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from uuid import UUID
-from chunk_source import ChunkSource
+from src.domain.entities.chunk_source import ChunkSource
 
 @dataclass
 class SearchResult:
