@@ -16,8 +16,8 @@ SEARCH_TOOL = {
                 },
                 "top_k": {
                     "type": "integer",
-                    "description": "Number of chunks to retrieve (default 5, max 10).",
-                    "default": 5,
+                    "description": "Number of chunks to retrieve (default 10, max 15).",
+                    "default": 10,
                 },
             },
             "required": ["query"],

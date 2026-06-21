@@ -1,4 +1,5 @@
 from __future__ import annotations
+import os
 import re
 
 import pdfplumber
@@ -32,7 +33,7 @@ def _is_heading(line: str) -> bool:
 
 
 class PDFExtractor(IBaseExtractor):
-    def __init__(self, chunk_size: int = 500, chunk_overlap: int = 50):
+    def __init__(self, chunk_size: int = int(os.getenv('CHUNK_SIZE')), chunk_overlap: int = int(os.getenv('CHUNK_OVERLAP'))):
         self.chunk_size = chunk_size
         self.chunk_overlap = chunk_overlap
 

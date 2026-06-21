@@ -55,7 +55,7 @@ class ImpDocumentRepository(IDocumentRepository):
     async def search_chunks(
         self,
         query_embedding: list[float],
-        top_k: int = 5,
+        top_k: int = 10,
         document_ids: Optional[list[UUID]] = None,
     ) -> list[SearchResult]:
         embedding_str = json.dumps(query_embedding)

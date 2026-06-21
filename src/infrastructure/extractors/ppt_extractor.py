@@ -1,3 +1,5 @@
+import os
+
 from pptx import Presentation
 
 from src.domain.interfaces.extractor import IBaseExtractor
@@ -6,7 +8,7 @@ from src.infrastructure.extractors.chunker import recursive_split
 
 
 class PPTXExtractor(IBaseExtractor):
-    def __init__(self, chunk_size: int = 500, chunk_overlap: int = 50):
+    def __init__(self, chunk_size: int = int(os.getenv('CHUNK_SIZE')), chunk_overlap: int = int(os.getenv('CHUNK_OVERLAP'))):
         self.chunk_size = chunk_size
         self.chunk_overlap = chunk_overlap
 

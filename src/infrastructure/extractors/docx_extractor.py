@@ -1,4 +1,5 @@
 from __future__ import annotations
+import os
 
 from docx import Document as DocxDocument
 from docx.oxml.ns import qn
@@ -27,7 +28,7 @@ def _extract_table_text(table) -> str:
 
 
 class DOCXExtractor(IBaseExtractor):
-    def __init__(self, chunk_size: int = 500, chunk_overlap: int = 50):
+    def __init__(self, chunk_size: int = int(os.getenv('CHUNK_SIZE')), chunk_overlap: int = int(os.getenv('CHUNK_OVERLAP'))):
         self.chunk_size = chunk_size
         self.chunk_overlap = chunk_overlap
 

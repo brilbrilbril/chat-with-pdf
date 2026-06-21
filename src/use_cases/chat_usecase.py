@@ -96,7 +96,10 @@ class ChatUseCase:
 
         sources_used: list[SearchResult] = []
 
-        while llm_response["tool_calls"]:
+        MAX_TOOL_ITERATION = 3
+        iter = 0
+        while llm_response["tool_calls"] and iter < MAX_TOOL_ITERATION:
+            iter+=1
             tool_call = llm_response["tool_calls"][0]
             assert tool_call["name"] == "search_documents"
 
@@ -130,6 +133,16 @@ class ChatUseCase:
             llm_response = await self._llm.chat(
                 messages=openai_messages,
                 tools=[SEARCH_TOOL],
+            )
+        
+        if iter >= MAX_TOOL_ITERATION and llm_response["tool_calls"]:
+            openai_messages.append({
+                "role": "user", 
+                "content": "Based on the search results so far, please provide your final answer now. Do not call any more tools."
+            })
+            llm_response = await self._llm.chat(
+                messages=openai_messages,
+                tools=None,
             )
 
         answer = llm_response["content"]
