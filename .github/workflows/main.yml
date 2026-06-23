@@ -28,7 +28,7 @@ jobs:
             ${{ secrets.DOCKER_USERNAME }}/chat-with-pdf:latest
             ${{ secrets.DOCKER_USERNAME }}/chat-with-pdf:${{ github.sha }}
 
-      - name: Deploy to VPS
+      - name: Deploy to VPS (pull image only)
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -37,16 +37,10 @@ jobs:
           script: |
             cd /opt/chat-with-pdf
 
-            if [ ! -d ".git" ]; then
-              git clone https://github.com/brilbrilbril/chat-with-pdf.git .
-            else
-              git pull origin main
-            fi
+            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
-            docker compose down
+            docker compose pull
 
-            docker compose pull || true
-
-            docker compose up -d --build
+            docker compose up -d
 
             docker image prune -f
