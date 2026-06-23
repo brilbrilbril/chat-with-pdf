@@ -11,6 +11,7 @@ export default function App() {
   const [sending, setSending] = useState(false);
   const [sessionId] = useState(() => uuidv4());
   const [uploadStatus, setUploadStatus] = useState('');
+  const [deleteStatus, setDeleteStatus] = useState('');
   const chatEndRef = useRef(null);
   const fileInputRef = useRef(null);
 
@@ -93,6 +94,30 @@ export default function App() {
     setMessages([]);
   };
 
+  const deleteAllDocs = async () => {
+    if (!confirm('Delete all documents and clear chat? This cannot be undone.')) return;
+
+    setDeleteStatus('Deleting all documents...');
+
+    try {
+      const res = await fetch(`/documents`, {
+        method: 'DELETE',
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ detail: 'Delete failed' }));
+        throw new Error(err.detail || `HTTP ${res.status}`);
+      }
+
+      setMessages([]);
+      setDeleteStatus('✅ All documents deleted');
+      setTimeout(() => setDeleteStatus(''), 3000);
+    } catch (err) {
+      setDeleteStatus(`❌ ${err.message}`);
+      setTimeout(() => setDeleteStatus(''), 4000);
+    }
+  };
+
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -109,6 +134,9 @@ export default function App() {
           <button className="btn btn-clear" onClick={clearChat} disabled={messages.length === 0}>
             Clear
           </button>
+          <button className="btn btn-delete" onClick={deleteAllDocs}>
+            🗑 Delete All
+          </button>
         </div>
       </div>
 
@@ -124,6 +152,7 @@ export default function App() {
           />
         </label>
         {uploadStatus && <div className="upload-status">{uploadStatus}</div>}
+        {deleteStatus && <div className="delete-status">{deleteStatus}</div>}
       </div>
 
       {/* Chat Area */}
