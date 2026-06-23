@@ -1,7 +1,8 @@
 from __future__ import annotations
 import os
 
-LANGSMITH_ENABLED = bool(os.getenv("LANGCHAIN_API_KEY"))
+LANGSMITH_ENABLED = bool(os.getenv("LANGSMITH_API_KEY"))
+print(f"enabled?: {LANGSMITH_ENABLED}")
 
 if LANGSMITH_ENABLED:
     from langsmith import traceable
