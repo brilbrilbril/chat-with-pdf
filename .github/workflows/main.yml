@@ -37,7 +37,11 @@ jobs:
           script: |
             cd /opt/chat-with-pdf
 
-            git pull origin main || true
+            if [ ! -d ".git" ]; then
+              git clone https://github.com/brilbrilbril/chat-with-pdf.git .
+            else
+              git pull origin main
+            fi
 
             docker compose down
 
