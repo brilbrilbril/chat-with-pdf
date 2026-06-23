@@ -30,7 +30,7 @@ export default function App() {
     setSending(true);
 
     try {
-      const res = await fetch(`/chat`, {
+      const res = await fetch(`/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ session_id: sessionId, message: text }),
@@ -69,7 +69,7 @@ export default function App() {
     formData.append('file', file);
 
     try {
-      const res = await fetch(`/documents/upload`, {
+      const res = await fetch(`/api/documents/upload`, {
         method: 'POST',
         body: formData,
       });
@@ -100,7 +100,7 @@ export default function App() {
     setDeleteStatus('Deleting all documents...');
 
     try {
-      const res = await fetch(`/documents`, {
+      const res = await fetch(`/api/documents`, {
         method: 'DELETE',
       });
 

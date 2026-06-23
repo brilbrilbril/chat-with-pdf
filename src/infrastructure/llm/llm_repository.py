@@ -27,7 +27,7 @@ class ImpLLMService(ILLMRepository):
             kwargs["tools"] = tools
             kwargs["tool_choice"] = "auto"
         print(f"Client: {self._client}")
-        print(f"URL: {os.getenv("OPENAI_BASE_URL")}")
+        print(f"URL: {os.getenv('OPENAI_BASE_URL')}")
         print(f"messages: {messages}")
         print(f"kwargs: {kwargs}")
         

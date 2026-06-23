@@ -13,7 +13,7 @@ class ImpEmbeddingRepository(IEmbeddingRepository):
     async def embed(self, text: str) -> list[float]:
         print(f"actual client base_url: {self._client.base_url}")
         print(f"client embedding: {self._client}")
-        print(f"base_url embedding: {os.getenv("OPENAI_EMBEDDING_URL")}")
+        print(f"base_url embedding: {os.getenv('OPENAI_EMBEDDING_URL')}")
         print(f"embedding model: {self._model}")
         response = await self._client.embeddings.create(
             model=self._model,
@@ -24,7 +24,7 @@ class ImpEmbeddingRepository(IEmbeddingRepository):
     async def embed_batch(self, texts: list[str]) -> list[list[float]]:
         print(f"actual client base_url: {self._client.base_url}")
         print(f"client embedding: {self._client}")
-        print(f"base_url embedding: {os.getenv("OPENAI_EMBEDDING_URL")}")
+        print(f"base_url embedding: {os.getenv('OPENAI_EMBEDDING_URL')}")
         print(f"embedding model: {self._model}")
         if not texts:
             return []
