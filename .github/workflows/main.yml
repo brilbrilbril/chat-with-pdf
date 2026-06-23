@@ -52,7 +52,7 @@ jobs:
               ${{ secrets.DOCKER_USERNAME }}/chat-with-pdf:latest
 
             # Run DB migrations
-            docker exec chat-with-pdf python scripts/init_db.py
+            docker exec chat-with-pdf python scripts/initdb.py
 
             # Clean up old images
             docker image prune -f
