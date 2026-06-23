@@ -25,8 +25,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/doc-intelligence:latest
-            ${{ secrets.DOCKER_USERNAME }}/doc-intelligence:${{ github.sha }}
+            ${{ secrets.DOCKER_USERNAME }}/chat-with-pdf:latest
+            ${{ secrets.DOCKER_USERNAME }}/chat-with-pdf:${{ github.sha }}
 
       - name: Deploy to VPS
         uses: appleboy/ssh-action@v1
