@@ -35,6 +35,10 @@ class IDocumentRepository(ABC):
         document_ids: Optional[list[UUID]] = None,
     ) -> list[SearchResult]:
         ...
+        
+    @abstractmethod
+    async def delete_all_documents(self):
+        ...
  
     # @abstractmethod
     # async def update_chunk_count(self, document_id: UUID, count: int) -> None:

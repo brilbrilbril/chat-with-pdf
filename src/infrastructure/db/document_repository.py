@@ -100,6 +100,16 @@ class ImpDocumentRepository(IDocumentRepository):
             )
 
         return [self._row_to_search_result(r) for r in result.mappings().all()]
+    
+    async def delete_all_documents(self):
+        async with self._session.begin():
+            await self._session.execute(
+               text("DELETE FROM chunks") 
+            )
+            
+            await self._session.execute(
+               text("DELETE FROM documents") 
+            )
 
     # private
     async def _insert_document(self, document: Document) -> None:

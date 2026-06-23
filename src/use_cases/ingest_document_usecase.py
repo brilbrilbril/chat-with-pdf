@@ -62,3 +62,6 @@ class IngestDocumentUseCase:
         document.chunk_count = len(chunks)
 
         return document
+    
+    async def delete(self):
+        await self._repo.delete_all_documents()

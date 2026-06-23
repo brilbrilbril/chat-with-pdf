@@ -5,7 +5,7 @@ from src.domain.entities.chunk import RawChunk
 
 
 class XLSXExtractor(IBaseExtractor):
-    def __init__(self, rows_per_chunk: int = 30):
+    def __init__(self, rows_per_chunk: int = 5):
         self.rows_per_chunk = rows_per_chunk
 
     def extract(self, file_path: str) -> list[RawChunk]:
