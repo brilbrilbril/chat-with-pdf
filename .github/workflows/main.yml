@@ -28,19 +28,25 @@ jobs:
             ${{ secrets.DOCKER_USERNAME }}/chat-with-pdf:latest
             ${{ secrets.DOCKER_USERNAME }}/chat-with-pdf:${{ github.sha }}
 
-      - name: Deploy to VPS (pull image only)
+      - name: Deploy to VPS
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            cd /opt/chat-with-pdf
-
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
-            docker compose pull
+            docker pull ${{ secrets.DOCKER_USERNAME }}/chat-with-pdf:latest
 
-            docker compose up -d
+            docker stop chat-with-pdf || true
+            docker rm chat-with-pdf || true
+
+            docker run -d \
+              --name chat-with-pdf \
+              --restart always \
+              -p 80:8000 \
+              --env-file /opt/chat-with-pdf/.env \
+              ${{ secrets.DOCKER_USERNAME }}/chat-with-pdf:latest
 
             docker image prune -f
