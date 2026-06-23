@@ -37,22 +37,12 @@ jobs:
           script: |
             cd /opt/chat-with-pdf
 
-            # Pull latest image
-            docker pull ${{ secrets.DOCKER_USERNAME }}/chat-with-pdf:latest
+            git pull origin main || true
 
-            # Re-run with updated image (zero-downtime swap)
-            docker stop chat-with-pdf || true
-            docker rm chat-with-pdf || true
+            docker compose down
 
-            docker run -d \
-              --name chat-with-pdf \
-              --restart unless-stopped \
-              -p 8000:8000 \
-              --env-file .env \
-              ${{ secrets.DOCKER_USERNAME }}/chat-with-pdf:latest
+            docker compose pull || true
 
-            # Run DB migrations
-            docker exec chat-with-pdf python scripts/initdb.py
+            docker compose up -d --build
 
-            # Clean up old images
             docker image prune -f
