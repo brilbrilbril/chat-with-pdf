@@ -1,0 +1,8 @@
+services:
+  backend:
+    image: ${DOCKER_USERNAME}/cwp-backend:latest
+    build: !reset null
+ 
+  frontend:
+    image: ${DOCKER_USERNAME}/cwp-frontend:latest
+    build: !reset null
