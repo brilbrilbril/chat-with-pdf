@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS chunks (
     id           UUID PRIMARY KEY,
     document_id  UUID NOT NULL REFERENCES documents(id) ON DELETE CASCADE,
     text         TEXT NOT NULL,
-    embedding    VECTOR(1024),
+    embedding    VECTOR(1536),
     file_name    TEXT NOT NULL,
     file_type    TEXT NOT NULL,
     -- source location (nullable depending on file type)
