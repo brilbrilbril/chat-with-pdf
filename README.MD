@@ -118,7 +118,7 @@ Frontend at `http://localhost:5173`
 
 ---
 
-## Running with Docker Compose
+## Running with Docker Compose (RECOMMENDED)
 
 ```bash
 # Build and start all services
@@ -135,8 +135,8 @@ Services:
 
 | Service | Port |
 |---------|------|
-| Backend API | 3000 |
-| Frontend | 80 |
+| Backend API | 3000 or 8000 (via docker) |
+| Frontend | 5173 or 80 (via docker) |
 | PostgreSQL | 5433 (host) |
 
 ---
