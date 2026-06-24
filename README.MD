@@ -176,6 +176,34 @@ curl -X POST http://localhost:3000/chat \
   -d '{"session_id": "my-session-123", "message": "What is the audit procedure?"}'
 ```
 
+### SAMPLE Q&A
+PDF:
+siapa yang dikenakan wajib pajak badan?
+jelaskan mengenai wajib pajak orang pribadi
+siapa yang tidak termasuk wajib pajak?
+
+word:
+jelaskan mengenai penyakit ginjal kronis
+ringkas pembukaan UUD1945
+
+excel:
+how about troubleshooting AWS IAM?
+tell me the abstract about understanding cicd
+explain me about clinical evaluation of migraine
+
+txt:
+bagaimana kebijakan reschedule? -> follow up keyword or query = "kebijakan reschedule"
+bagaimana kebijakan pengiriman logistik?
+
+
+PPT:
+Kriteria Steganografi Yang Bagus
+jelaskan mengenai perubahan warna pada steganografi
+
+
+### SAMPLE DOCS
+You can use documents from sample_docs directory. **remember: make sure you delete all documents before uploading new document**
+
 ### IMPORTANT NOTE
 1. The current deployed app is one-session only, so to overcome the problem of documents being hit because there is still no suitable filter, please **delete the uploaded file before uploading a new file.**
 
