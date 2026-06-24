@@ -4,29 +4,31 @@ FROM node:20-alpine AS build
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm ci && chmod +x node_modules/.bin/*
+RUN npm ci
 
 COPY . .
-RUN npm run build
+
+# Fix permissions after COPY — Windows host strips execute bits
+RUN chmod +x node_modules/.bin/* && npm run build
 
 # ---- Runtime stage ----
 FROM nginx:alpine
 
 COPY --from=build /app/dist /usr/share/nginx/html
 
-RUN echo 'server { \n\
-    listen 80; \n\
-    root /usr/share/nginx/html; \n\
-    index index.html; \n\
-    location / { \n\
-        try_files $uri $uri/ /index.html; \n\
-    } \n\
-    location /api/ { \n\
-        proxy_pass http://backend:8000/; \n\
-        proxy_set_header Host $host; \n\
-        proxy_set_header X-Real-IP $remote_addr; \n\
-    } \n\
-}' > /etc/nginx/conf.d/default.conf
+RUN printf 'server {\n\
+    listen 80;\n\
+    root /usr/share/nginx/html;\n\
+    index index.html;\n\
+    location / {\n\
+        try_files $uri $uri/ /index.html;\n\
+    }\n\
+    location /api/ {\n\
+        proxy_pass http://backend:8000/;\n\
+        proxy_set_header Host $host;\n\
+        proxy_set_header X-Real-IP $remote_addr;\n\
+    }\n\
+}\n' > /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
