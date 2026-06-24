@@ -47,6 +47,7 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           source: "docker-compose.yaml,docker-compose.prod.yaml"
           target: /opt/chat-with-pdf
+          overwrite: true
 
       - name: Deploy to VPS
         uses: appleboy/ssh-action@v1
