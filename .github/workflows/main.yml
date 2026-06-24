@@ -45,7 +45,7 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          source: "docker-compose.yml,docker-compose.prod.yml"
+          source: "docker-compose.yaml,docker-compose.prod.yaml"
           target: /opt/chat-with-pdf
 
       - name: Deploy to VPS
@@ -62,7 +62,7 @@ jobs:
             docker pull ${{ secrets.DOCKER_USERNAME }}/cwp-frontend:latest
 
             DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} \
-            docker compose -f docker-compose.yml -f docker-compose.prod.yml \
+            docker compose -f docker-compose.yaml -f docker-compose.prod.yaml \
               up -d --no-build
 
             docker exec cwp_backend python scripts/init_db.py
