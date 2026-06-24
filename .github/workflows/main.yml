@@ -66,6 +66,6 @@ jobs:
             docker compose -f docker-compose.yaml -f docker-compose.prod.yaml \
               up -d --no-build
 
-            docker exec cwp_backend python scripts/init_db.py
+            docker exec cwp_backend python scripts/initdb.py
 
             docker image prune -f
