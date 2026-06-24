@@ -54,7 +54,7 @@ class ChatUseCase:
             openai_msgs.append({"role": m.role, "content": m.content})
         return openai_msgs
 
-    async def _execute_search(self, query: str, top_k: int = 5) -> list[SearchResult]:
+    async def _execute_search(self, query: str, top_k: int = 10) -> list[SearchResult]:
         embedding = await self._embedder.embed(query)
         return await self._repo.search_chunks(embedding, top_k=min(top_k, 10))
 
@@ -104,7 +104,7 @@ class ChatUseCase:
             assert tool_call["name"] == "search_documents"
 
             query = tool_call["arguments"]["query"]
-            top_k = tool_call["arguments"].get("top_k", 5)
+            top_k = tool_call["arguments"].get("top_k", 10)
 
             search_results = await self._execute_search(query, top_k)
             sources_used.extend(search_results)

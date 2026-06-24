@@ -31,7 +31,7 @@ class IDocumentRepository(ABC):
     async def search_chunks(
         self,
         query_embedding: list[float],
-        top_k: int = 5,
+        top_k: int = 10,
         document_ids: Optional[list[UUID]] = None,
     ) -> list[SearchResult]:
         ...
