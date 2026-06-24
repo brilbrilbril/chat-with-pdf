@@ -19,14 +19,34 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push Docker image
+      - name: Build and push backend image
         uses: docker/build-push-action@v5
         with:
           context: .
+          dockerfile: Dockerfile
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/chat-with-pdf:latest
-            ${{ secrets.DOCKER_USERNAME }}/chat-with-pdf:${{ github.sha }}
+            ${{ secrets.DOCKER_USERNAME }}/cwp-backend:latest
+            ${{ secrets.DOCKER_USERNAME }}/cwp-backend:${{ github.sha }}
+
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          dockerfile: ./frontend/Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/cwp-frontend:latest
+            ${{ secrets.DOCKER_USERNAME }}/cwp-frontend:${{ github.sha }}
+
+      - name: Copy compose files to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          source: "docker-compose.yml,docker-compose.prod.yml"
+          target: /opt/chat-with-pdf
 
       - name: Deploy to VPS
         uses: appleboy/ssh-action@v1
@@ -34,19 +54,17 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
+          envs: DOCKER_USERNAME
           script: |
-            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+            cd /opt/chat-with-pdf
 
-            docker pull ${{ secrets.DOCKER_USERNAME }}/chat-with-pdf:latest
+            docker pull ${{ secrets.DOCKER_USERNAME }}/cwp-backend:latest
+            docker pull ${{ secrets.DOCKER_USERNAME }}/cwp-frontend:latest
 
-            docker stop chat-with-pdf || true
-            docker rm chat-with-pdf || true
+            DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} \
+            docker compose -f docker-compose.yml -f docker-compose.prod.yml \
+              up -d --no-build
 
-            docker run -d \
-              --name chat-with-pdf \
-              --restart always \
-              -p 80:8000 \
-              --env-file /opt/chat-with-pdf/.env \
-              ${{ secrets.DOCKER_USERNAME }}/chat-with-pdf:latest
+            docker exec cwp_backend python scripts/init_db.py
 
             docker image prune -f
