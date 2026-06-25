@@ -210,6 +210,8 @@ You can use documents from sample_docs directory. **remember: make sure you dele
 2. Because this project for demo uses **PAID API AND VPS**, so expect the termination server on **28th June 2026**
 
 3. If somehow the LLM or embedding is error, it might be the **credit runs out.**
+
+4. I will periodically **delete** the documents every 3 hours.
 ---
 
 ## Production Deployment
